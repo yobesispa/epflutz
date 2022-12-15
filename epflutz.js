@@ -138,10 +138,6 @@ cls.pushPage = function(pageUnchecked) {
   return page;
 }; 
 
-cls.pan = function(n){
- return this.pageAt(n).getAnchor(true);
-}; 
-
 cls.insertPage = function(pageUnchecked,n) { 
   chkInt(n) || fail("want integer, not "+n);
   var len = this.pageCount();

@@ -6,6 +6,11 @@
  *************************************** 
 **/
 
+// APPEND A COVER IMAGE AND A TABLE OF CONTENTS (AN "OUTLINE") TO A PDF
+// USAGE: 
+//   cd to the current directory, and run the command below:
+//   mutool run recipe-raw-with-toc-and-cover.js <path to the pdf you want to append the cover and outline to >  <path to the image> 
+
 'use strict';
 
 var pdf_lib = require('../../epflutz');
@@ -30,8 +35,11 @@ while (e<pcount) {
 } 
   
 function _o(name,yFromTop,pageNum,ch) {
-  return OutlineEntry.make(name,pw.pan(pageNum),[null,yFromTop,0],ch);
-}
+  return OutlineEntry.make(
+    name,
+    pw.pageAt(pageNum).getAnchor(true),
+    [null,yFromTop,0], ch);
+} 
 
 var OUTLINE = [
   _o("Contents",null,6),

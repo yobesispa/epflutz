@@ -1,4 +1,29 @@
 
+/**
+ ***************************************
+ * @[license]: any GPL you like!
+ * @author: https://github.com/yobesispa
+ *************************************** 
+**/
+  
+// CRUNCH A PDF INTO MANY SMALLER ONES
+// USAGE:
+//   cd to the current directory, and run the command below:
+//   mutool run recipe-one-to-many.js <path to the pdf you want to crunch> RANGE_0 RANGE_1 ...
+//   where RANGE can be
+//     * a page number, starting at 0; e.g., "0", "1"
+//     * a range of pages; e.g., "0-12", "5-1500", "1-.", ".-255"
+//     as you have noted, a "." can be used instead of a page number;
+//     it is called an auto-range -- the script automatically replaces it
+//     based on the previous (or next) range; for example, the range list below:
+//       1-. 55-255 .-1500
+//     becomes:
+//       1-54 55-255 256-1500
+//
+/////////////////////////////
+  
+
+
 'use strict';
 
 var pdf_lib = require('../../epflutz');
@@ -39,7 +64,7 @@ while (e<ranges.length) {
   if (len>0) {
     var pw = new PDFWriter();
     pw.pushAllFromIndexWithLen(sourcePDF, rn.head, len);
-    pw.unsafeSaveAs(SAVE_PATH+'_'+rangeToStr(rn));
+    pw.unsafeSaveAs(SAVE_PATH+'_'+rangeToStr(rn)+('.pdf'));
   }
   ++e;
 } 

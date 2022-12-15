@@ -6,6 +6,12 @@
  *************************************** 
 **/
 
+// APPEND A COVER IMAGE TO A PDF
+// USAGE: 
+//   cd to the current directory, and run the command below:
+//   mutool run recipe-raw-eith-toc.js <path to the pdf you want to append the cover to >  <path to the image> 
+
+'use strict';
 'use strict';
 
 var pdf_lib = require('../../epflutz');
