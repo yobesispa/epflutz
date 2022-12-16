@@ -50,7 +50,17 @@ cls.bounds = function() {
   if (e){return e}
 
   var m = this.raw.get("MediaBox");
-  m || fail("there is no MediaBox for the given page");
+  if (!m) {
+    var up = this.raw;
+    do {
+      up = up.get("Parent");
+      if (!up) {return null}
+      m = up.get("MediaBox");
+    } while (!m);
+      
+    if (!m) {return null}
+  } 
+  // m || fail("there is no MediaBox for the given page");
   
   var l = 0;
   e = [];
@@ -366,33 +376,29 @@ cls.compileFor = function(pdfWriter,rawParent) {
   return (currentAsRef);
 }; 
 
-OutlineEntry.make = function(name,pageNumFuture,xyz,ch) {
-  if (xyz instanceof PageXYZ) {}
-  else {
-    var x = null, y = null, z = 0;
-    if (xyz) {
-      switch (xyz.length) {
-      case 3:
-        z = xyz[2]; if (z===null){z=0}; /* fall-through */
-      case 2:
-        y = xyz[1]; /* fall-through */
-      case 1:
-        x = xyz[0]; 
-        break;
-      default:
-        if ('z' in xyz) {z=xyz.z; if (z===null){z=0} }
-        if ('y' in xyz) {y=xyz.y;}
-        if ('x' in xyz) {x=xyz.x;} 
-      }
-    }
-    
-    xyz = new PageXYZ(x,y,z);
+OutlineEntry.make = function(name,pageNumFuture,xyzL,ch) { 
+  var xyz = null;
+  if (xyzL !== null) {
+    var e = xyzL.length;
+    (chkInt(e) && 0<=e && e<=3) || fail("array of [x,y,z], not "+xyzL);
+    xyz = new PageXYZ(
+      e>0?xyzL[0]:null,
+      e>1?xyzL[1]:null,
+      e>2?xyzL[2]:null
+    );
   }
+   
+  var entry = new OutlineEntry(
+    null,name,
+    new OutlineTarget(
+      pageNumFuture,
+      xyz
+    )
+  ); 
   
-  var e = (new OutlineEntry(null,name,new OutlineTarget(pageNumFuture,xyz)));
-  if (ch) { e.pushChildren(ch) }
+  if (ch) { entry.pushChildren(ch) }
   
-  return e;
+  return entry;
 }; 
   
 });
