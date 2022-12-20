@@ -1,6 +1,11 @@
 
 'use strict';
 
+// USAGE:
+// run with 'mutool run obtain-outlines-server-loop-micro.js' (no arguments)
+// then:
+// feed it with *JSON.stringify*ed file-names (one file-name per line)
+
 function say_err(e) { print('!'+e); }
 function say_consumable(l) { print('*'+l); }
 function say_output_complete() { print('-'); }
